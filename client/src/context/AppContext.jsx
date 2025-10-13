@@ -8,7 +8,7 @@ const AppContext = createContext();
 export const AppContextProvider = ({ children }) => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
-  const [chat, setChat] = useState([]);
+  const [chats, setChat] = useState([]);
   const [selectedChats, setSelectedChats] = useState(null);
   const [theme, setTheme] = useState(localStorage.getItem("theme" || "light"));
 
@@ -47,7 +47,7 @@ export const AppContextProvider = ({ children }) => {
     navigate,
     user,
     setUser,
-    chat,
+    chats,
     setChat,
     selectedChats,
     setSelectedChats,
