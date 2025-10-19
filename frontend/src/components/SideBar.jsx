@@ -92,7 +92,7 @@ const SideBar = () => {
       hover:scale-103 transition-all">
           <img src={assets.diamond_icon} alt="" className="w-4.5 dark:invert" />
           <div className="flex flex-col text-sm">
-            <p>Credits : {user.credits}</p>
+            <p>Credits {user?.credits} : 0</p>
             <p className="text-xs text-gray-400">Purchase creditsm to use quickgpt</p>
           </div>
       </div>
