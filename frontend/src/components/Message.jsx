@@ -4,14 +4,9 @@ import moment from "moment";
 import Markdown from "react-markdown";
 import Prism from "prismjs";
 const Message = ({ message }) => {
-
-
-  useEffect(()=>{
-
+  useEffect(() => {
     Prism.highlightAll();
-
-  },[message.content])
-
+  }, [message.content]);
 
   return (
     <div>
