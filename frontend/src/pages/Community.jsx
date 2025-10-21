@@ -1,8 +1,33 @@
-import React from 'react'
-
+import React, { useEffect, useState } from 'react'
+import dummyPublishedImages from '../assets/assets'
+import Loading from './Loading'
 const Community = () => {
+
+  const [images,setImages]=useState([])
+  const [loading,setLoading]=useState(true)
+
+  const fetchImages=async ()=> {
+    setImages(dummyPublishedImages)
+    setLoading(false)
+  }
+
+  useEffect(()=>{
+    fetchImages()
+  },[])
+
+  if(loading) return <Loading/>
+
   return (
-    <div>
+    <div className='p-6 pt-12 xl:px-12 2xl:px-20 w-full mx-auto h-full overflow-y-scroll'>
+      <h2 className='text-xl font-semibold mb-6 text-gray-800 dark:text-purple-100'>Community Images</h2>
+    {images.length >0 ? (
+      <div></div>
+    )
+    :
+    (
+      <p className='text-center text-gray-600 dark:text-purple-200 mt-10'>No Community Image Available</p>
+    )
+    }
       
     </div>
   )
