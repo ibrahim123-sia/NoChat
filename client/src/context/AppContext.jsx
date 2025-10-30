@@ -12,7 +12,7 @@ const AppContext = createContext();
 export const AppContextProvider = ({ children }) => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
-  const [chats, setChat] = useState([]);
+  const [chats, setChats] = useState([]);
   const [selectedChat, setSelectedChat] = useState(null);
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
   const [token, setToken] = useState(localStorage.getItem("token") || null);
@@ -43,6 +43,7 @@ export const AppContextProvider = ({ children }) => {
       await axios.get("/api/chat/create", {
         headers: { Authorization: token },
       });
+      
       fetchUserChats();
     } catch (error) {
       toast.error(error.message);
@@ -56,7 +57,7 @@ export const AppContextProvider = ({ children }) => {
       });
 
       if (data.success) {
-        setChat(data.chats);
+        setChats(data.chats);
         // if user have no chat
         if (data.chats.length === 0) {
           await createNewChat();
@@ -85,7 +86,7 @@ export const AppContextProvider = ({ children }) => {
     if (user) {
       fetchUserChats();
     } else {
-      setChat([]);
+      setChats([]);
       setSelectedChat(null);
     }
   }, [user]);
@@ -104,7 +105,7 @@ export const AppContextProvider = ({ children }) => {
     setTheme,
     setUser,
     chats,
-    setChat,
+    setChats,
     selectedChat,
     setSelectedChat,
     theme,
