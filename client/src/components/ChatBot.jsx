@@ -73,12 +73,16 @@ const ChatBot = () => {
   }, [messages]);
 
   return (
-    <div className="flex-1 flex flex-col justify-between m-5 md:m-10 xl:mx-30 max-md:mt-14 2xl:pr-40">
-      <div ref={containRef} className="flex-1 mb-5 overflow-y-scroll">
+    <div className="flex-1 flex flex-col justify-between max-md:m-2 md:m-5 lg:m-10 xl:mx-30 max-md:mt-4 2xl:pr-40">
+      <div ref={containRef} className="flex-1 max-md:mb-3 mb-5 overflow-y-scroll">
         {messages.length === 0 && (
-          <div className="h-full flex flex-col items-center justify-center gap-2 text-primary">
-            <img src={chatbot} alt="" className="w-full max-w-40 sm:max-w-40" />
-            <p className="mt-5 text-4xl sm:text-6xl text-center text-gray-400 dark:text-white">
+          <div className="h-full flex flex-col items-center justify-center gap-2 text-primary max-md:py-4">
+            <img 
+              src={chatbot} 
+              alt="" 
+              className="w-full max-md:max-w-20 sm:max-w-32 md:max-w-40" 
+            />
+            <p className="mt-2 max-md:text-xl md:text-4xl lg:text-6xl text-center text-gray-400 dark:text-white">
               Ask me Anything
             </p>
           </div>
@@ -99,8 +103,8 @@ const ChatBot = () => {
       </div>
 
       {mode === "image" && (
-        <label className="inline-flex items-center gap-2 mb-3 text-sm mx-auto">
-          <p className="text-xs">Published Generated Image to Community</p>
+        <label className="inline-flex items-center gap-2 max-md:mb-2 mb-3 text-sm mx-auto max-md:text-xs">
+          <p className="max-md:text-xs">Published Generated Image to Community</p>
           <input
             type="checkbox"
             className="cursor-pointer"
@@ -114,12 +118,12 @@ const ChatBot = () => {
       <form
         onSubmit={onSubmit}
         className="bg-primary/20 dark:bg-[#583C79]/30 border-primary dark:border-[#80609F]/30
-      rounded-full w-full max-w-2xl p-3 pl-4 mx-auto flex gap-4 items-center"
+      rounded-full w-full max-w-2xl p-2 max-md:p-1.5 max-md:pl-3 pl-4 mx-auto flex gap-3 max-md:gap-2 items-center"
       >
         <select
           onChange={(e) => setMode(e.target.value)}
           value={mode}
-          className="text-sm pl-3 pr-2 outline-none"
+          className="text-sm max-md:text-xs pl-2 max-md:pl-1 pr-1 outline-none bg-transparent"
         >
           <option value="text" className="dark:bg-purple-900">
             Text
@@ -134,12 +138,12 @@ const ChatBot = () => {
           type="text"
           placeholder="Type your prompt here..."
           required
-          className="flex-1 w-full text-sm outline-none"
+          className="flex-1 w-full text-sm max-md:text-xs outline-none bg-transparent"
         />
-        <button disabled={loading}>
+        <button disabled={loading} className="max-md:pr-1">
           <img
             src={loading ? assets.stop_icon : assets.send_icon}
-            className="w-8 cursor-pointer"
+            className="w-7 max-md:w-6 cursor-pointer"
             alt=""
           />
         </button>
