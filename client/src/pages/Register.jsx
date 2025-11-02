@@ -89,21 +89,21 @@ const Register = () => {
       setLoading(false);
     }
   };
- const formWrapper = "flex flex-col gap-3 w-full p-6 py-8 text-gray-100 max-h-[90vh] overflow-hidden";
-  const inputClass = "border border-purple-400/50 rounded-lg w-full p-3 bg-purple-900/30 text-white placeholder-gray-400 outline-purple-400 focus:ring-2 focus:ring-purple-400 transition-all text-sm";
+   const formWrapper = "flex flex-col gap-4 w-full p-8 text-gray-100";
+  const inputClass = "border border-purple-400/50 rounded-lg w-full p-3 bg-purple-900/30 text-white placeholder-gray-400 outline-purple-400 focus:ring-2 focus:ring-purple-400 transition-all text-sm text-center";
   const buttonPrimary = "bg-purple-600 hover:bg-purple-700 transition-all text-white w-full py-3 rounded-lg cursor-pointer font-medium disabled:opacity-50 disabled:cursor-not-allowed";
 
   return (
     <div className="w-full bg-gradient-to-br from-purple-900/90 to-purple-800/80 rounded-2xl border border-purple-300/30 shadow-2xl backdrop-blur-sm">
       {step === 0 ? (
         <form onSubmit={handleRegister} className={formWrapper}>
-          <p className="text-2xl font-bold text-center mb-4 text-purple-300">
+          <p className="text-2xl font-bold text-center mb-6 text-purple-300">
             Create Account
           </p>
 
-          <div className="space-y-4">
-            <div>
-              <p className="font-medium text-purple-200 mb-1 text-sm">Full Name</p>
+          <div className="space-y-4 w-full">
+            <div className="w-full">
+              <p className="font-medium text-purple-200 mb-2 text-sm text-center">Full Name</p>
               <input
                 onChange={(e) => setName(e.target.value)}
                 value={name}
@@ -115,8 +115,8 @@ const Register = () => {
               />
             </div>
 
-            <div>
-              <p className="font-medium text-purple-200 mb-1 text-sm">Email</p>
+            <div className="w-full">
+              <p className="font-medium text-purple-200 mb-2 text-sm text-center">Email</p>
               <input
                 onChange={(e) => setEmail(e.target.value)}
                 value={email}
@@ -127,8 +127,8 @@ const Register = () => {
               />
             </div>
 
-            <div>
-              <p className="font-medium text-purple-200 mb-1 text-sm">Password</p>
+            <div className="w-full">
+              <p className="font-medium text-purple-200 mb-2 text-sm text-center">Password</p>
               <input
                 onChange={(e) => setPassword(e.target.value)}
                 value={password}
@@ -140,8 +140,8 @@ const Register = () => {
               />
             </div>
 
-            <div>
-              <p className="font-medium text-purple-200 mb-1 text-sm">Confirm Password</p>
+            <div className="w-full">
+              <p className="font-medium text-purple-200 mb-2 text-sm text-center">Confirm Password</p>
               <input
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 value={confirmPassword}
@@ -158,14 +158,14 @@ const Register = () => {
             {loading ? "Creating Account..." : "Create Account"}
           </button>
 
-          <Link to="/login" className="w-full text-center mt-4">
-            <p className="text-purple-200 text-sm">
+          <div className="text-center mt-4">
+            <Link to="/login" className="text-purple-200 text-sm">
               Already have an account?{" "}
               <span className="text-purple-300 cursor-pointer font-medium hover:underline">
                 Sign in
               </span>
-            </p>
-          </Link>
+            </Link>
+          </div>
         </form>
       ) : (
         <form onSubmit={handleVerifyOtp} className={formWrapper}>
@@ -173,23 +173,21 @@ const Register = () => {
             Verify Email
           </p>
 
-          <p className="text-purple-200 text-center mb-4 text-sm">
+          <p className="text-purple-200 text-center mb-6 text-sm">
             We've sent a 6-digit OTP to <strong className="text-purple-300">{email}</strong>
           </p>
 
-          <div className="space-y-4">
-            <div>
-              <p className="font-medium text-purple-200 mb-1 text-sm">OTP Code</p>
-              <input
-                onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
-                value={otp}
-                placeholder="Enter 6-digit OTP"
-                className={inputClass}
-                type="text"
-                maxLength={6}
-                required
-              />
-            </div>
+          <div className="w-full">
+            <p className="font-medium text-purple-200 mb-2 text-sm text-center">OTP Code</p>
+            <input
+              onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
+              value={otp}
+              placeholder="Enter 6-digit OTP"
+              className={inputClass}
+              type="text"
+              maxLength={6}
+              required
+            />
           </div>
 
           <button
@@ -200,12 +198,12 @@ const Register = () => {
             {loading ? "Verifying..." : "Verify OTP"}
           </button>
 
-          <div className="flex flex-col gap-2 mt-4">
+          <div className="flex flex-col gap-3 mt-4 w-full">
             <button
               type="button"
               onClick={handleResendOtp}
               disabled={loading}
-              className="bg-purple-700 hover:bg-purple-800 transition-all text-white w-full py-2 rounded-lg cursor-pointer font-medium disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+              className="bg-purple-700 hover:bg-purple-800 transition-all text-white w-full py-3 rounded-lg cursor-pointer font-medium disabled:opacity-50 disabled:cursor-not-allowed text-sm"
             >
               {loading ? "Sending..." : "Resend OTP"}
             </button>
@@ -219,7 +217,7 @@ const Register = () => {
             </button>
           </div>
 
-          <p className="text-xs text-purple-300 text-center mt-4">
+          <p className="text-xs text-purple-300 text-center mt-6">
             OTP will expire in 5 minutes.
           </p>
         </form>

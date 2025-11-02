@@ -84,21 +84,21 @@ const Login = () => {
     }
   };
 
-  const formWrapper = "flex flex-col gap-3 w-full p-6 py-8 text-gray-100 max-h-[90vh] overflow-hidden";
-  const inputClass = "border border-purple-400/50 rounded-lg w-full p-3 bg-purple-900/30 text-white placeholder-gray-400 outline-purple-400 focus:ring-2 focus:ring-purple-400 transition-all text-sm";
+   const formWrapper = "flex flex-col gap-4 w-full p-8 text-gray-100";
+  const inputClass = "border border-purple-400/50 rounded-lg w-full p-3 bg-purple-900/30 text-white placeholder-gray-400 outline-purple-400 focus:ring-2 focus:ring-purple-400 transition-all text-sm text-center";
   const buttonPrimary = "bg-purple-600 hover:bg-purple-700 transition-all text-white w-full py-3 rounded-lg cursor-pointer font-medium disabled:opacity-50 disabled:cursor-not-allowed";
 
   return (
     <div className="w-full bg-gradient-to-br from-purple-900/90 to-purple-800/80 rounded-2xl border border-purple-300/30 shadow-2xl backdrop-blur-sm">
       {resetStep === 0 ? (
         <form onSubmit={handleSubmit} className={formWrapper}>
-          <p className="text-2xl font-bold text-center mb-4 text-purple-300">
+          <p className="text-2xl font-bold text-center mb-6 text-purple-300">
             Welcome Back
           </p>
 
-          <div className="space-y-4">
-            <div>
-              <p className="font-medium text-purple-200 mb-1 text-sm">Email</p>
+          <div className="space-y-4 w-full">
+            <div className="w-full">
+              <p className="font-medium text-purple-200 mb-2 text-sm text-center">Email</p>
               <input
                 onChange={(e) => setEmail(e.target.value)}
                 value={email}
@@ -108,8 +108,8 @@ const Login = () => {
                 required
               />
             </div>
-            <div>
-              <p className="font-medium text-purple-200 mb-1 text-sm">Password</p>
+            <div className="w-full">
+              <p className="font-medium text-purple-200 mb-2 text-sm text-center">Password</p>
               <input
                 onChange={(e) => setPassword(e.target.value)}
                 value={password}
@@ -125,60 +125,62 @@ const Login = () => {
             {loading ? "Signing in..." : "Sign In"}
           </button>
 
-          <Link to="/register" className="w-full text-center mt-4 block">
-            <p className="text-purple-200 text-sm">
+          <div className="text-center mt-4">
+            <Link to="/register" className="text-purple-200 text-sm">
               Don't have an account?{" "}
               <span className="text-purple-300 cursor-pointer font-medium hover:underline">
                 Create account
               </span>
-            </p>
-          </Link>
+            </Link>
+          </div>
 
-          <button
-            type="button"
-            onClick={() => setResetStep(1)}
-            className="text-purple-300 hover:text-purple-200 cursor-pointer text-sm font-medium transition-colors text-center mt-2"
-          >
-            Forgot Password?
-          </button>
+          <div className="text-center mt-2">
+            <button
+              type="button"
+              onClick={() => setResetStep(1)}
+              className="text-purple-300 hover:text-purple-200 cursor-pointer text-sm font-medium transition-colors"
+            >
+              Forgot Password?
+            </button>
+          </div>
         </form>
       ) : resetStep === 1 ? (
         <form onSubmit={handleSendOtp} className={formWrapper}>
-          <h2 className="text-xl font-bold text-center mb-4 text-purple-300">
+          <h2 className="text-xl font-bold text-center mb-6 text-purple-300">
             Reset Password
           </h2>
-          <div className="space-y-4">
-            <div>
-              <p className="font-medium text-purple-200 mb-1 text-sm">Email</p>
-              <input
-                type="email"
-                value={resetEmail}
-                onChange={(e) => setResetEmail(e.target.value)}
-                className={inputClass}
-                placeholder="Enter your email"
-                required
-              />
-            </div>
+          <div className="w-full">
+            <p className="font-medium text-purple-200 mb-2 text-sm text-center">Email</p>
+            <input
+              type="email"
+              value={resetEmail}
+              onChange={(e) => setResetEmail(e.target.value)}
+              className={inputClass}
+              placeholder="Enter your email"
+              required
+            />
           </div>
           <button type="submit" className={`${buttonPrimary} mt-6`} disabled={loading}>
             {loading ? "Sending..." : "Send OTP"}
           </button>
-          <button
-            type="button"
-            onClick={() => setResetStep(0)}
-            className="text-purple-300 hover:text-purple-200 cursor-pointer text-sm font-medium transition-colors text-center mt-4"
-          >
-            Back to Login
-          </button>
+          <div className="text-center mt-4">
+            <button
+              type="button"
+              onClick={() => setResetStep(0)}
+              className="text-purple-300 hover:text-purple-200 cursor-pointer text-sm font-medium transition-colors"
+            >
+              Back to Login
+            </button>
+          </div>
         </form>
       ) : (
         <form onSubmit={handlePasswordReset} className={formWrapper}>
-          <h2 className="text-xl font-bold text-center mb-4 text-purple-300">
+          <h2 className="text-xl font-bold text-center mb-6 text-purple-300">
             Reset Password
           </h2>
-          <div className="space-y-4">
-            <div>
-              <p className="font-medium text-purple-200 mb-1 text-sm">OTP</p>
+          <div className="space-y-4 w-full">
+            <div className="w-full">
+              <p className="font-medium text-purple-200 mb-2 text-sm text-center">OTP</p>
               <input
                 type="text"
                 value={resetOtp}
@@ -189,8 +191,8 @@ const Login = () => {
                 required
               />
             </div>
-            <div>
-              <p className="font-medium text-purple-200 mb-1 text-sm">New Password</p>
+            <div className="w-full">
+              <p className="font-medium text-purple-200 mb-2 text-sm text-center">New Password</p>
               <input
                 type="password"
                 value={newPassword}
@@ -201,8 +203,8 @@ const Login = () => {
                 minLength={6}
               />
             </div>
-            <div>
-              <p className="font-medium text-purple-200 mb-1 text-sm">Confirm Password</p>
+            <div className="w-full">
+              <p className="font-medium text-purple-200 mb-2 text-sm text-center">Confirm Password</p>
               <input
                 type="password"
                 value={confirmPassword}
@@ -217,13 +219,15 @@ const Login = () => {
           <button type="submit" className={`${buttonPrimary} mt-6`} disabled={loading}>
             {loading ? "Resetting..." : "Reset Password"}
           </button>
-          <button
-            type="button"
-            onClick={() => setResetStep(1)}
-            className="text-purple-300 hover:text-purple-200 cursor-pointer text-sm font-medium transition-colors text-center mt-4"
-          >
-            Back to Email
-          </button>
+          <div className="text-center mt-4">
+            <button
+              type="button"
+              onClick={() => setResetStep(1)}
+              className="text-purple-300 hover:text-purple-200 cursor-pointer text-sm font-medium transition-colors"
+            >
+              Back to Email
+            </button>
+          </div>
         </form>
       )}
     </div>
