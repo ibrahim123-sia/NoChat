@@ -1,6 +1,5 @@
 import { createContext, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { dummyChats, dummyUserData } from "../assets/assets";
 import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -37,20 +36,20 @@ export const AppContextProvider = ({ children }) => {
   const createNewChat = async () => {
     try {
       if (!user) {
-        return toast("login to create new chat");
+        return toast("Login to create new chat");
       }
       navigate("/");
       await axios.get("/api/chat/create", {
         headers: { Authorization: token },
       });
-      
-      fetchUserChats();
+
+      await fetchUsersChats();
     } catch (error) {
       toast.error(error.message);
     }
   };
 
-  const fetchUserChats = async () => {
+  const fetchUsersChats = async () => {
     try {
       const { data } = await axios.get("/api/chat/get", {
         headers: { Authorization: token },
@@ -61,7 +60,7 @@ export const AppContextProvider = ({ children }) => {
         // if user have no chat
         if (data.chats.length === 0) {
           await createNewChat();
-          return fetchUserChats();
+          return fetchUsersChats();
         } else {
           setSelectedChat(data.chats[0]);
         }
@@ -84,7 +83,7 @@ export const AppContextProvider = ({ children }) => {
 
   useEffect(() => {
     if (user) {
-      fetchUserChats();
+      fetchUsersChats();
     } else {
       setChats([]);
       setSelectedChat(null);
@@ -113,7 +112,7 @@ export const AppContextProvider = ({ children }) => {
     fetchUser,
     createNewChat,
     loadingUser,
-    fetchUserChats,
+    fetchUsersChats,
     token,
     setToken,
     axios,

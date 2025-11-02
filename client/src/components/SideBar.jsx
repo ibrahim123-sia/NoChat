@@ -3,6 +3,7 @@ import { useAppContext } from "../context/AppContext";
 import { assets } from "../assets/assets";
 import moment from "moment";
 import toast from "react-hot-toast";
+import chatbot from "../../public/chatbot.png";
 const SideBar = ({ isMenuOpen, setIsMenuOpen }) => {
   const {
     chats,
@@ -14,7 +15,7 @@ const SideBar = ({ isMenuOpen, setIsMenuOpen }) => {
     createNewChat,
     axios,
     setChats,
-    fetchUserChats,
+    fetchUsersChats,
     token,
     setToken,
   } = useAppContext();
@@ -43,8 +44,8 @@ const SideBar = ({ isMenuOpen, setIsMenuOpen }) => {
       );
 
       if (data.success) {
-        setChats((prev) => prev.filter((chat) => chat._id));
-        await fetchUserChats();
+        setChats((prev) => prev.filter((chat) => chat._id !== chatId));
+        await fetchUsersChats();
         toast.success(data.message);
       }
     } catch (error) {
@@ -54,21 +55,31 @@ const SideBar = ({ isMenuOpen, setIsMenuOpen }) => {
 
   return (
     <div
-      className={`flex flex-col h-screen min-w-72 p-5 dark:bg-gradient-to-b from-[#242124]/30 to-[#000000]/30
+      className={`flex flex-col h-screen min-w-72 p-3 dark:bg-gradient-to-b from-[#242124]/30 to-[#000000]/30
     border-r border-[#80609f]/30 backdrop-blur-3xl transition-all duration-500 max-md:absolute left-0 z-1
     ${!isMenuOpen && "max-md:translate-x-[125%]"}`}
     >
-      {/* logo */}
-      <img
-        src={theme === "dark" ? assets.logo_full : assets.logo_full_dark}
-        alt=""
-        className="w-full max-w-48"
-      />
+      {/* Logo */}
+      <div className="flex items-center gap-3">
+        <img
+          src={chatbot}
+          alt="NoChat AI Assistant Logo"
+          className="w-15 h-15 object-contain"
+        />
+        <div className="flex flex-col">
+          <span className="font-semibold text-gray-900 dark:text-white">
+            NoChat
+          </span>
+          <span className="text-sm text-gray-600 dark:text-gray-400">
+            AI-Powered Assistant
+          </span>
+        </div>
+      </div>
 
       {/* new chat */}
       <button
-      onClick={createNewChat}
-        className="flex justify-center items-center w-full py-2 mt-10 text-white 
+        onClick={createNewChat}
+        className="flex justify-center items-center w-full py-2 mt-6 text-white 
       bg-gradient-to-r from-[#A456F7] to-[#3D81F6] text-sm rounded-md cursor-pointer"
       >
         <span className="mr-2 text-xl">+</span> New Chat
@@ -88,8 +99,8 @@ const SideBar = ({ isMenuOpen, setIsMenuOpen }) => {
         />
       </div>
       {/* recent chat */}
-      {chats.length > 0 && <p className="mt-4 text-sm">Recent Chats</p>}
-      <div className="flex-1 overflow-y-scroll mt-3 text-sm space-y-3">
+      {chats.length > 0 && <p className="mt-2 text-sm">Recent Chats</p>}
+      <div className="flex-1 overflow-y-scroll mt-2 text-sm space-y-3">
         {chats
           .filter((chat) =>
             chat.messages[0]
@@ -124,7 +135,11 @@ const SideBar = ({ isMenuOpen, setIsMenuOpen }) => {
                 alt=""
                 className="hidden group-hover:block w-4 cursor-pointer
               not-dark:invert"
-              onClick={e=>toast.promise(deleteChat(e,chat._id),{loading:'Deleting...'})}
+                onClick={(e) =>
+                  toast.promise(deleteChat(e, chat._id), {
+                    loading: "Deleting...",
+                  })
+                }
               />
             </div>
           ))}
@@ -136,7 +151,7 @@ const SideBar = ({ isMenuOpen, setIsMenuOpen }) => {
           navigate("/community");
           setIsMenuOpen(false);
         }}
-        className="flex items-center gap-2 p-3 mt-4 border border-gray-300 dark:border-white/15 rounded-md  cursor-pointer
+        className="flex items-center gap-2 p-3 mt-2 border border-gray-300 dark:border-white/15 rounded-md  cursor-pointer
       hover:scale-103 transition-all"
       >
         <img
@@ -155,7 +170,7 @@ const SideBar = ({ isMenuOpen, setIsMenuOpen }) => {
           navigate("/credits");
           setIsMenuOpen(false);
         }}
-        className="flex items-center gap-2 p-3 mt-4 border border-gray-300 dark:border-white/15 rounded-md  cursor-pointer
+        className="flex items-center gap-2 p-3 mt-2 border border-gray-300 dark:border-white/15 rounded-md  cursor-pointer
       hover:scale-103 transition-all"
       >
         <img src={assets.diamond_icon} alt="" className="w-4.5 dark:invert" />
@@ -168,7 +183,7 @@ const SideBar = ({ isMenuOpen, setIsMenuOpen }) => {
       </div>
 
       {/* dark mode toggle */}
-      <div className="flex items-center justify-between gap-2 p-3 mt-4 border border-gray-300 dark:border-white/15 rounded-md ">
+      <div className="flex items-center justify-between gap-2 p-3 mt-2 border border-gray-300 dark:border-white/15 rounded-md ">
         <div className="flex items-center gap-2 text-sm">
           <img src={assets.theme_icon} alt="" className="w-4 not-dark:invert" />
           <p>Dark Mode</p>
@@ -190,7 +205,7 @@ const SideBar = ({ isMenuOpen, setIsMenuOpen }) => {
 
       {/* user account */}
       <div
-        className="flex items-center gap-3 p-3 mt-4 border border-gray-300 dark:border-white/15 rounded-md  cursor-pointer
+        className="flex items-center gap-3 p-3 mt-2 border border-gray-300 dark:border-white/15 rounded-md  cursor-pointer
       group"
       >
         <img src={assets.user_icon} alt="" className="w-7 rounded-full" />

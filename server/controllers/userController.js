@@ -5,7 +5,6 @@ import Chat from "../models/Chat.js";
 
 import User from "../models/User.js";
 
-
 // generate JWT
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "30d" });
@@ -70,8 +69,8 @@ export const getPublishedImages = async (req, res) => {
       { $unwind: "$messages" },
       {
         $match: {
-          "message.isImage": true,
-          "message.isPublished": true,
+          "messages.isImage": true,
+          "messages.isPublished": true,
         },
       },
       {
@@ -83,7 +82,7 @@ export const getPublishedImages = async (req, res) => {
       },
     ]);
 
-    res.json({ success: true, images: publishedImageMessages.reverse });
+    res.json({ success: true, images: publishedImageMessages.reverse() });
   } catch (error) {
     res.json({ success: false, message: error.message });
   }

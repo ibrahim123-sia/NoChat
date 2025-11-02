@@ -9,7 +9,7 @@ export const textMessageController = async (req, res) => {
     const userId = req.user._id;
 
     // check credits
-    if (req.user.credit < 1) {
+    if (req.user.credits < 1) {
       return res.json({
         success: false,
         message: "You dont have enough credit to use this feature",
@@ -55,7 +55,7 @@ export const imageMessageController = async function (req, res) {
   try {
     const userId = req.user._id;
     // check credits
-    if (req.user.credit < 2) {
+    if (req.user.credits < 2) {
       return res.json({
         success: false,
         message: "You dont have enough credit to use this feature",
