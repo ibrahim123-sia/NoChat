@@ -204,10 +204,7 @@ const SideBar = ({ isMenuOpen, setIsMenuOpen }) => {
       </div>
 
       {/* user account */}
-      <div
-        className="flex items-center gap-3 p-3 mt-2 border border-gray-300 dark:border-white/15 rounded-md  cursor-pointer
-      group"
-      >
+      <div className="flex items-center gap-3 p-3 mt-2 border border-gray-300 dark:border-white/15 rounded-md cursor-pointer group bg-gray-50 dark:bg-gray-800">
         <img src={assets.user_icon} alt="" className="w-7 rounded-full" />
         <p className="flex-1 text-sm dark:text-primary truncate">
           {user ? user.name : "Login your account"}
@@ -216,8 +213,7 @@ const SideBar = ({ isMenuOpen, setIsMenuOpen }) => {
           <img
             onClick={logout}
             src={assets.logout_icon}
-            className="h-5 cursor-pointer hidden
-        not-dark:invert group-hover:block"
+            className="h-5 cursor-pointer block not-dark:invert md:group-hover:block"
           />
         )}
       </div>

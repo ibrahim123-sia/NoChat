@@ -89,27 +89,21 @@ const Register = () => {
       setLoading(false);
     }
   };
-
-  const formWrapper = "flex flex-col gap-4 w-full max-w-md p-8 text-gray-100";
-  const inputClass = "border border-purple-400/40 rounded-xl w-full p-4 bg-purple-900/30 text-white placeholder-purple-300/60 outline-none focus:ring-2 focus:ring-purple-400/50 focus:border-purple-400/60 transition-all duration-300 backdrop-blur-sm";
-  const buttonPrimary = "bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 transition-all duration-300 text-white w-full py-4 rounded-xl cursor-pointer font-semibold disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-purple-500/20";
-  const buttonSecondary = "bg-purple-700/80 hover:bg-purple-800 transition-all duration-300 text-white w-full py-4 rounded-xl cursor-pointer font-medium disabled:opacity-50 disabled:cursor-not-allowed border border-purple-500/30";
-  const linkBtn = "text-purple-300 hover:text-purple-200 cursor-pointer text-sm font-medium transition-colors";
+ const formWrapper = "flex flex-col gap-3 w-full p-6 py-8 text-gray-100 max-h-[90vh] overflow-hidden";
+  const inputClass = "border border-purple-400/50 rounded-lg w-full p-3 bg-purple-900/30 text-white placeholder-gray-400 outline-purple-400 focus:ring-2 focus:ring-purple-400 transition-all text-sm";
+  const buttonPrimary = "bg-purple-600 hover:bg-purple-700 transition-all text-white w-full py-3 rounded-lg cursor-pointer font-medium disabled:opacity-50 disabled:cursor-not-allowed";
 
   return (
-    <div className="w-full">
+    <div className="w-full bg-gradient-to-br from-purple-900/90 to-purple-800/80 rounded-2xl border border-purple-300/30 shadow-2xl backdrop-blur-sm">
       {step === 0 ? (
         <form onSubmit={handleRegister} className={formWrapper}>
-          <div className="text-center mb-8">
-            <p className="text-4xl font-bold bg-gradient-to-r from-purple-300 to-indigo-300 bg-clip-text text-transparent">
-              Create Account
-            </p>
-            <p className="text-purple-200/80 mt-2">Join our AI chatbot platform</p>
-          </div>
+          <p className="text-2xl font-bold text-center mb-4 text-purple-300">
+            Create Account
+          </p>
 
-          <div className="space-y-6">
+          <div className="space-y-4">
             <div>
-              <label className="font-medium text-purple-200 mb-2 block">Full Name</label>
+              <p className="font-medium text-purple-200 mb-1 text-sm">Full Name</p>
               <input
                 onChange={(e) => setName(e.target.value)}
                 value={name}
@@ -122,7 +116,7 @@ const Register = () => {
             </div>
 
             <div>
-              <label className="font-medium text-purple-200 mb-2 block">Email</label>
+              <p className="font-medium text-purple-200 mb-1 text-sm">Email</p>
               <input
                 onChange={(e) => setEmail(e.target.value)}
                 value={email}
@@ -134,7 +128,7 @@ const Register = () => {
             </div>
 
             <div>
-              <label className="font-medium text-purple-200 mb-2 block">Password</label>
+              <p className="font-medium text-purple-200 mb-1 text-sm">Password</p>
               <input
                 onChange={(e) => setPassword(e.target.value)}
                 value={password}
@@ -147,7 +141,7 @@ const Register = () => {
             </div>
 
             <div>
-              <label className="font-medium text-purple-200 mb-2 block">Confirm Password</label>
+              <p className="font-medium text-purple-200 mb-1 text-sm">Confirm Password</p>
               <input
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 value={confirmPassword}
@@ -160,41 +154,32 @@ const Register = () => {
             </div>
           </div>
 
-          <button type="submit" disabled={loading} className={`${buttonPrimary} mt-8`}>
-            {loading ? (
-              <div className="flex items-center justify-center">
-                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-                Creating Account...
-              </div>
-            ) : (
-              "Create Account"
-            )}
+          <button type="submit" disabled={loading} className={`${buttonPrimary} mt-6`}>
+            {loading ? "Creating Account..." : "Create Account"}
           </button>
 
-          <div className="text-center mt-6">
-            <p className="text-purple-200">
+          <Link to="/login" className="w-full text-center mt-4">
+            <p className="text-purple-200 text-sm">
               Already have an account?{" "}
-              <Link to="/login" className="text-purple-300 hover:text-purple-200 font-semibold underline underline-offset-2 transition-colors">
+              <span className="text-purple-300 cursor-pointer font-medium hover:underline">
                 Sign in
-              </Link>
+              </span>
             </p>
-          </div>
+          </Link>
         </form>
       ) : (
         <form onSubmit={handleVerifyOtp} className={formWrapper}>
-          <div className="text-center mb-8">
-            <p className="text-4xl font-bold bg-gradient-to-r from-purple-300 to-indigo-300 bg-clip-text text-transparent">
-              Verify Email
-            </p>
-            <p className="text-purple-200 mt-4">
-              We've sent a 6-digit OTP to <br />
-              <strong className="text-purple-300 text-lg">{email}</strong>
-            </p>
-          </div>
+          <p className="text-2xl font-bold text-center mb-2 text-purple-300">
+            Verify Email
+          </p>
 
-          <div className="space-y-6">
+          <p className="text-purple-200 text-center mb-4 text-sm">
+            We've sent a 6-digit OTP to <strong className="text-purple-300">{email}</strong>
+          </p>
+
+          <div className="space-y-4">
             <div>
-              <label className="font-medium text-purple-200 mb-2 block">OTP Code</label>
+              <p className="font-medium text-purple-200 mb-1 text-sm">OTP Code</p>
               <input
                 onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
                 value={otp}
@@ -210,24 +195,17 @@ const Register = () => {
           <button
             type="submit"
             disabled={loading || otp.length !== 6}
-            className={`${buttonPrimary} mt-8`}
+            className={`${buttonPrimary} mt-6`}
           >
-            {loading ? (
-              <div className="flex items-center justify-center">
-                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-                Verifying...
-              </div>
-            ) : (
-              "Verify OTP"
-            )}
+            {loading ? "Verifying..." : "Verify OTP"}
           </button>
 
-          <div className="space-y-3 mt-4">
+          <div className="flex flex-col gap-2 mt-4">
             <button
               type="button"
               onClick={handleResendOtp}
               disabled={loading}
-              className={buttonSecondary}
+              className="bg-purple-700 hover:bg-purple-800 transition-all text-white w-full py-2 rounded-lg cursor-pointer font-medium disabled:opacity-50 disabled:cursor-not-allowed text-sm"
             >
               {loading ? "Sending..." : "Resend OTP"}
             </button>
@@ -235,19 +213,17 @@ const Register = () => {
             <button
               type="button"
               onClick={() => setStep(0)}
-              className={`${linkBtn} text-center w-full py-3 rounded-lg border border-purple-500/30 hover:bg-purple-500/10 transition-colors`}
+              className="text-purple-300 hover:text-purple-200 cursor-pointer text-sm font-medium transition-colors text-center"
             >
               Back to Registration
             </button>
           </div>
 
-          <p className="text-xs text-purple-300/80 text-center mt-6">
-            OTP will expire in 5 minutes. Check your spam folder if you don't see the email.
+          <p className="text-xs text-purple-300 text-center mt-4">
+            OTP will expire in 5 minutes.
           </p>
         </form>
       )}
     </div>
   );
 };
-
-export default Register;

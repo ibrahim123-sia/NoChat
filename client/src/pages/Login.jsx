@@ -84,25 +84,21 @@ const Login = () => {
     }
   };
 
-  const formWrapper = "flex flex-col gap-4 w-full max-w-md p-8 text-gray-100";
-  const inputClass = "border border-purple-400/40 rounded-xl w-full p-4 bg-purple-900/30 text-white placeholder-purple-300/60 outline-none focus:ring-2 focus:ring-purple-400/50 focus:border-purple-400/60 transition-all duration-300 backdrop-blur-sm";
-  const buttonPrimary = "bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 transition-all duration-300 text-white w-full py-4 rounded-xl cursor-pointer font-semibold disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-purple-500/20";
-  const linkBtn = "text-purple-300 hover:text-purple-200 cursor-pointer text-sm font-medium transition-colors";
+  const formWrapper = "flex flex-col gap-3 w-full p-6 py-8 text-gray-100 max-h-[90vh] overflow-hidden";
+  const inputClass = "border border-purple-400/50 rounded-lg w-full p-3 bg-purple-900/30 text-white placeholder-gray-400 outline-purple-400 focus:ring-2 focus:ring-purple-400 transition-all text-sm";
+  const buttonPrimary = "bg-purple-600 hover:bg-purple-700 transition-all text-white w-full py-3 rounded-lg cursor-pointer font-medium disabled:opacity-50 disabled:cursor-not-allowed";
 
   return (
-    <div className="w-full">
+    <div className="w-full bg-gradient-to-br from-purple-900/90 to-purple-800/80 rounded-2xl border border-purple-300/30 shadow-2xl backdrop-blur-sm">
       {resetStep === 0 ? (
         <form onSubmit={handleSubmit} className={formWrapper}>
-          <div className="text-center mb-8">
-            <p className="text-4xl font-bold bg-gradient-to-r from-purple-300 to-indigo-300 bg-clip-text text-transparent">
-              Welcome Back
-            </p>
-            <p className="text-purple-200/80 mt-2">Sign in to your AI assistant</p>
-          </div>
+          <p className="text-2xl font-bold text-center mb-4 text-purple-300">
+            Welcome Back
+          </p>
 
-          <div className="space-y-6">
+          <div className="space-y-4">
             <div>
-              <label className="font-medium text-purple-200 mb-2 block">Email</label>
+              <p className="font-medium text-purple-200 mb-1 text-sm">Email</p>
               <input
                 onChange={(e) => setEmail(e.target.value)}
                 value={email}
@@ -113,7 +109,7 @@ const Login = () => {
               />
             </div>
             <div>
-              <label className="font-medium text-purple-200 mb-2 block">Password</label>
+              <p className="font-medium text-purple-200 mb-1 text-sm">Password</p>
               <input
                 onChange={(e) => setPassword(e.target.value)}
                 value={password}
@@ -125,46 +121,35 @@ const Login = () => {
             </div>
           </div>
 
-          <button type="submit" disabled={loading} className={`${buttonPrimary} mt-8`}>
-            {loading ? (
-              <div className="flex items-center justify-center">
-                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-                Signing in...
-              </div>
-            ) : (
-              "Sign In"
-            )}
+          <button type="submit" disabled={loading} className={`${buttonPrimary} mt-6`}>
+            {loading ? "Signing in..." : "Sign In"}
           </button>
 
-          <div className="text-center mt-6">
-            <p className="text-purple-200">
+          <Link to="/register" className="w-full text-center mt-4 block">
+            <p className="text-purple-200 text-sm">
               Don't have an account?{" "}
-              <Link to="/register" className="text-purple-300 hover:text-purple-200 font-semibold underline underline-offset-2 transition-colors">
+              <span className="text-purple-300 cursor-pointer font-medium hover:underline">
                 Create account
-              </Link>
+              </span>
             </p>
-          </div>
+          </Link>
 
           <button
             type="button"
             onClick={() => setResetStep(1)}
-            className={`${linkBtn} text-center mt-4 py-3 rounded-lg border border-purple-500/30 hover:bg-purple-500/10 transition-colors`}
+            className="text-purple-300 hover:text-purple-200 cursor-pointer text-sm font-medium transition-colors text-center mt-2"
           >
             Forgot Password?
           </button>
         </form>
       ) : resetStep === 1 ? (
         <form onSubmit={handleSendOtp} className={formWrapper}>
-          <div className="text-center mb-8">
-            <p className="text-3xl font-bold bg-gradient-to-r from-purple-300 to-indigo-300 bg-clip-text text-transparent">
-              Reset Password
-            </p>
-            <p className="text-purple-200/80 mt-2">Enter your email to receive OTP</p>
-          </div>
-          
-          <div className="space-y-6">
+          <h2 className="text-xl font-bold text-center mb-4 text-purple-300">
+            Reset Password
+          </h2>
+          <div className="space-y-4">
             <div>
-              <label className="font-medium text-purple-200 mb-2 block">Email</label>
+              <p className="font-medium text-purple-200 mb-1 text-sm">Email</p>
               <input
                 type="email"
                 value={resetEmail}
@@ -175,31 +160,25 @@ const Login = () => {
               />
             </div>
           </div>
-          
-          <button type="submit" className={`${buttonPrimary} mt-8`} disabled={loading}>
+          <button type="submit" className={`${buttonPrimary} mt-6`} disabled={loading}>
             {loading ? "Sending..." : "Send OTP"}
           </button>
-          
           <button
             type="button"
             onClick={() => setResetStep(0)}
-            className={`${linkBtn} text-center mt-4 py-3 rounded-lg border border-purple-500/30 hover:bg-purple-500/10 transition-colors`}
+            className="text-purple-300 hover:text-purple-200 cursor-pointer text-sm font-medium transition-colors text-center mt-4"
           >
             Back to Login
           </button>
         </form>
       ) : (
         <form onSubmit={handlePasswordReset} className={formWrapper}>
-          <div className="text-center mb-8">
-            <p className="text-3xl font-bold bg-gradient-to-r from-purple-300 to-indigo-300 bg-clip-text text-transparent">
-              Reset Password
-            </p>
-            <p className="text-purple-200/80 mt-2">Enter OTP and new password</p>
-          </div>
-          
-          <div className="space-y-6">
+          <h2 className="text-xl font-bold text-center mb-4 text-purple-300">
+            Reset Password
+          </h2>
+          <div className="space-y-4">
             <div>
-              <label className="font-medium text-purple-200 mb-2 block">OTP</label>
+              <p className="font-medium text-purple-200 mb-1 text-sm">OTP</p>
               <input
                 type="text"
                 value={resetOtp}
@@ -211,7 +190,7 @@ const Login = () => {
               />
             </div>
             <div>
-              <label className="font-medium text-purple-200 mb-2 block">New Password</label>
+              <p className="font-medium text-purple-200 mb-1 text-sm">New Password</p>
               <input
                 type="password"
                 value={newPassword}
@@ -223,7 +202,7 @@ const Login = () => {
               />
             </div>
             <div>
-              <label className="font-medium text-purple-200 mb-2 block">Confirm Password</label>
+              <p className="font-medium text-purple-200 mb-1 text-sm">Confirm Password</p>
               <input
                 type="password"
                 value={confirmPassword}
@@ -235,15 +214,13 @@ const Login = () => {
               />
             </div>
           </div>
-          
-          <button type="submit" className={`${buttonPrimary} mt-8`} disabled={loading}>
+          <button type="submit" className={`${buttonPrimary} mt-6`} disabled={loading}>
             {loading ? "Resetting..." : "Reset Password"}
           </button>
-          
           <button
             type="button"
             onClick={() => setResetStep(1)}
-            className={`${linkBtn} text-center mt-4 py-3 rounded-lg border border-purple-500/30 hover:bg-purple-500/10 transition-colors`}
+            className="text-purple-300 hover:text-purple-200 cursor-pointer text-sm font-medium transition-colors text-center mt-4"
           >
             Back to Email
           </button>
@@ -252,5 +229,3 @@ const Login = () => {
     </div>
   );
 };
-
-export default Login;
