@@ -18,7 +18,9 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const { data } = await axios.post("/api/user/forgetpassword", { email: resetEmail });
+      const { data } = await axios.post("/api/user/forgetpassword", {
+        email: resetEmail,
+      });
       if (data.success) {
         toast.success("OTP sent successfully");
         setResetStep(2);
@@ -38,13 +40,13 @@ const Login = () => {
       toast.error("Passwords do not match");
       return;
     }
-    
+
     setLoading(true);
     try {
-      const { data } = await axios.post("/api/user/resetpassword", { 
-        email: resetEmail, 
-        otp: resetOtp, 
-        newPassword 
+      const { data } = await axios.post("/api/user/resetpassword", {
+        email: resetEmail,
+        otp: resetOtp,
+        newPassword,
       });
       if (data.success) {
         toast.success("Password reset successfully");
@@ -72,7 +74,6 @@ const Login = () => {
         setToken(data.token);
         localStorage.setItem("token", data.token);
         toast.success("Login successful!");
-        navigate('/')
       } else {
         toast.error(data.message);
       }
@@ -83,22 +84,25 @@ const Login = () => {
     }
   };
 
-  // Styling constants with new theme (blue instead of purple)
-  const formWrapper = "flex flex-col gap-4 m-auto items-start p-8 py-12 w-80 sm:w-[400px] text-gray-600 rounded-xl shadow-lg border border-gray-100 bg-white";
-  const inputClass = "border border-gray-300 rounded-lg w-full p-3 mt-1 outline-blue-500 focus:ring-2 focus:ring-blue-200 transition-all";
-  const buttonPrimary = "bg-blue-600 hover:bg-blue-700 transition-all text-white w-full py-3 rounded-lg cursor-pointer font-medium disabled:opacity-50 disabled:cursor-not-allowed";
-  const linkBtn = "text-blue-500 hover:text-blue-700 cursor-pointer text-sm font-medium transition-colors";
+  const formWrapper =
+    "flex flex-col gap-4 m-auto items-start p-8 py-12 w-80 sm:w-[400px] text-gray-300 rounded-xl shadow-lg border border-purple-300/30 bg-gradient-to-br from-purple-900/90 to-purple-800/80";
+  const inputClass =
+    "border border-purple-400/50 rounded-lg w-full p-3 mt-1 bg-purple-900/50 text-white placeholder-gray-400 outline-purple-400 focus:ring-2 focus:ring-purple-400 transition-all";
+  const buttonPrimary =
+    "bg-purple-600 hover:bg-purple-700 transition-all text-white w-full py-3 rounded-lg cursor-pointer font-medium disabled:opacity-50 disabled:cursor-not-allowed";
+  const linkBtn =
+    "text-purple-300 hover:text-purple-200 cursor-pointer text-sm font-medium transition-colors";
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+    <div>
       {resetStep === 0 ? (
         <form onSubmit={handleSubmit} className={formWrapper}>
           <p className="text-3xl font-bold m-auto mb-6">
-            <span className="text-blue-600">Welcome Back</span>
+            <span className="text-purple-300">Welcome Back</span>
           </p>
 
           <div className="w-full">
-            <p className="font-medium text-gray-700 mb-1">Email</p>
+            <p className="font-medium text-purple-200 mb-1">Email</p>
             <input
               onChange={(e) => setEmail(e.target.value)}
               value={email}
@@ -109,7 +113,7 @@ const Login = () => {
             />
           </div>
           <div className="w-full">
-            <p className="font-medium text-gray-700 mb-1">Password</p>
+            <p className="font-medium text-purple-200 mb-1">Password</p>
             <input
               onChange={(e) => setPassword(e.target.value)}
               value={password}
@@ -120,23 +124,19 @@ const Login = () => {
             />
           </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className={buttonPrimary}
-          >
+          <button type="submit" disabled={loading} className={buttonPrimary}>
             {loading ? "Signing in..." : "Sign In"}
           </button>
-          
-          <Link to="/register" className="w-full text-center">
-            <p className="text-gray-600">
+
+          <Link to="/register" className="w-full text-center block">
+            <p className="text-purple-200">
               Don't have an account?{" "}
-              <span className="text-blue-600 cursor-pointer font-medium hover:underline">
+              <span className="text-purple-300 cursor-pointer font-medium hover:underline">
                 Create account
               </span>
             </p>
           </Link>
-          
+
           <button
             type="button"
             onClick={() => setResetStep(1)}
@@ -147,11 +147,11 @@ const Login = () => {
         </form>
       ) : resetStep === 1 ? (
         <form onSubmit={handleSendOtp} className={formWrapper}>
-          <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
+          <h2 className="text-2xl font-bold text-center mb-6 text-purple-200">
             Reset Password
           </h2>
           <div className="w-full">
-            <p className="font-medium text-gray-700 mb-1">Email</p>
+            <p className="font-medium text-purple-200 mb-1">Email</p>
             <input
               type="email"
               value={resetEmail}
@@ -174,11 +174,11 @@ const Login = () => {
         </form>
       ) : (
         <form onSubmit={handlePasswordReset} className={formWrapper}>
-          <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
+          <h2 className="text-2xl font-bold text-center mb-6 text-purple-200">
             Reset Password
           </h2>
           <div className="w-full">
-            <p className="font-medium text-gray-700 mb-1">OTP</p>
+            <p className="font-medium text-purple-200 mb-1">OTP</p>
             <input
               type="text"
               value={resetOtp}
@@ -190,7 +190,7 @@ const Login = () => {
             />
           </div>
           <div className="w-full">
-            <p className="font-medium text-gray-700 mb-1">New Password</p>
+            <p className="font-medium text-purple-200 mb-1">New Password</p>
             <input
               type="password"
               value={newPassword}
@@ -202,7 +202,7 @@ const Login = () => {
             />
           </div>
           <div className="w-full">
-            <p className="font-medium text-gray-700 mb-1">Confirm Password</p>
+            <p className="font-medium text-purple-200 mb-1">Confirm Password</p>
             <input
               type="password"
               value={confirmPassword}
