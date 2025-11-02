@@ -84,142 +84,166 @@ const Login = () => {
     }
   };
 
-  const formWrapper =
-    "flex flex-col gap-4 m-auto items-start p-8 py-12 w-80 sm:w-[400px] text-gray-300 rounded-xl shadow-lg border border-purple-300/30 bg-gradient-to-br from-purple-900/90 to-purple-800/80";
-  const inputClass =
-    "border border-purple-400/50 rounded-lg w-full p-3 mt-1 bg-purple-900/50 text-white placeholder-gray-400 outline-purple-400 focus:ring-2 focus:ring-purple-400 transition-all";
-  const buttonPrimary =
-    "bg-purple-600 hover:bg-purple-700 transition-all text-white w-full py-3 rounded-lg cursor-pointer font-medium disabled:opacity-50 disabled:cursor-not-allowed";
-  const linkBtn =
-    "text-purple-300 hover:text-purple-200 cursor-pointer text-sm font-medium transition-colors";
+  const formWrapper = "flex flex-col gap-4 w-full max-w-md p-8 text-gray-100";
+  const inputClass = "border border-purple-400/40 rounded-xl w-full p-4 bg-purple-900/30 text-white placeholder-purple-300/60 outline-none focus:ring-2 focus:ring-purple-400/50 focus:border-purple-400/60 transition-all duration-300 backdrop-blur-sm";
+  const buttonPrimary = "bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 transition-all duration-300 text-white w-full py-4 rounded-xl cursor-pointer font-semibold disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-purple-500/20";
+  const linkBtn = "text-purple-300 hover:text-purple-200 cursor-pointer text-sm font-medium transition-colors";
 
   return (
-    <div>
+    <div className="w-full">
       {resetStep === 0 ? (
         <form onSubmit={handleSubmit} className={formWrapper}>
-          <p className="text-3xl font-bold m-auto mb-6">
-            <span className="text-purple-300">Welcome Back</span>
-          </p>
-
-          <div className="w-full">
-            <p className="font-medium text-purple-200 mb-1">Email</p>
-            <input
-              onChange={(e) => setEmail(e.target.value)}
-              value={email}
-              placeholder="Enter your email"
-              className={inputClass}
-              type="email"
-              required
-            />
-          </div>
-          <div className="w-full">
-            <p className="font-medium text-purple-200 mb-1">Password</p>
-            <input
-              onChange={(e) => setPassword(e.target.value)}
-              value={password}
-              placeholder="Enter your password"
-              className={inputClass}
-              type="password"
-              required
-            />
+          <div className="text-center mb-8">
+            <p className="text-4xl font-bold bg-gradient-to-r from-purple-300 to-indigo-300 bg-clip-text text-transparent">
+              Welcome Back
+            </p>
+            <p className="text-purple-200/80 mt-2">Sign in to your AI assistant</p>
           </div>
 
-          <button type="submit" disabled={loading} className={buttonPrimary}>
-            {loading ? "Signing in..." : "Sign In"}
+          <div className="space-y-6">
+            <div>
+              <label className="font-medium text-purple-200 mb-2 block">Email</label>
+              <input
+                onChange={(e) => setEmail(e.target.value)}
+                value={email}
+                placeholder="Enter your email"
+                className={inputClass}
+                type="email"
+                required
+              />
+            </div>
+            <div>
+              <label className="font-medium text-purple-200 mb-2 block">Password</label>
+              <input
+                onChange={(e) => setPassword(e.target.value)}
+                value={password}
+                placeholder="Enter your password"
+                className={inputClass}
+                type="password"
+                required
+              />
+            </div>
+          </div>
+
+          <button type="submit" disabled={loading} className={`${buttonPrimary} mt-8`}>
+            {loading ? (
+              <div className="flex items-center justify-center">
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                Signing in...
+              </div>
+            ) : (
+              "Sign In"
+            )}
           </button>
 
-          <Link to="/register" className="w-full text-center block">
+          <div className="text-center mt-6">
             <p className="text-purple-200">
               Don't have an account?{" "}
-              <span className="text-purple-300 cursor-pointer font-medium hover:underline">
+              <Link to="/register" className="text-purple-300 hover:text-purple-200 font-semibold underline underline-offset-2 transition-colors">
                 Create account
-              </span>
+              </Link>
             </p>
-          </Link>
+          </div>
 
           <button
             type="button"
             onClick={() => setResetStep(1)}
-            className={linkBtn + " mt-2"}
+            className={`${linkBtn} text-center mt-4 py-3 rounded-lg border border-purple-500/30 hover:bg-purple-500/10 transition-colors`}
           >
             Forgot Password?
           </button>
         </form>
       ) : resetStep === 1 ? (
         <form onSubmit={handleSendOtp} className={formWrapper}>
-          <h2 className="text-2xl font-bold text-center mb-6 text-purple-200">
-            Reset Password
-          </h2>
-          <div className="w-full">
-            <p className="font-medium text-purple-200 mb-1">Email</p>
-            <input
-              type="email"
-              value={resetEmail}
-              onChange={(e) => setResetEmail(e.target.value)}
-              className={inputClass}
-              placeholder="Enter your email"
-              required
-            />
+          <div className="text-center mb-8">
+            <p className="text-3xl font-bold bg-gradient-to-r from-purple-300 to-indigo-300 bg-clip-text text-transparent">
+              Reset Password
+            </p>
+            <p className="text-purple-200/80 mt-2">Enter your email to receive OTP</p>
           </div>
-          <button type="submit" className={buttonPrimary} disabled={loading}>
+          
+          <div className="space-y-6">
+            <div>
+              <label className="font-medium text-purple-200 mb-2 block">Email</label>
+              <input
+                type="email"
+                value={resetEmail}
+                onChange={(e) => setResetEmail(e.target.value)}
+                className={inputClass}
+                placeholder="Enter your email"
+                required
+              />
+            </div>
+          </div>
+          
+          <button type="submit" className={`${buttonPrimary} mt-8`} disabled={loading}>
             {loading ? "Sending..." : "Send OTP"}
           </button>
+          
           <button
             type="button"
             onClick={() => setResetStep(0)}
-            className={linkBtn}
+            className={`${linkBtn} text-center mt-4 py-3 rounded-lg border border-purple-500/30 hover:bg-purple-500/10 transition-colors`}
           >
             Back to Login
           </button>
         </form>
       ) : (
         <form onSubmit={handlePasswordReset} className={formWrapper}>
-          <h2 className="text-2xl font-bold text-center mb-6 text-purple-200">
-            Reset Password
-          </h2>
-          <div className="w-full">
-            <p className="font-medium text-purple-200 mb-1">OTP</p>
-            <input
-              type="text"
-              value={resetOtp}
-              onChange={(e) => setResetOtp(e.target.value.replace(/\D/g, ""))}
-              maxLength={6}
-              className={inputClass}
-              placeholder="Enter 6-digit OTP"
-              required
-            />
+          <div className="text-center mb-8">
+            <p className="text-3xl font-bold bg-gradient-to-r from-purple-300 to-indigo-300 bg-clip-text text-transparent">
+              Reset Password
+            </p>
+            <p className="text-purple-200/80 mt-2">Enter OTP and new password</p>
           </div>
-          <div className="w-full">
-            <p className="font-medium text-purple-200 mb-1">New Password</p>
-            <input
-              type="password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              className={inputClass}
-              placeholder="Enter new password"
-              required
-              minLength={6}
-            />
+          
+          <div className="space-y-6">
+            <div>
+              <label className="font-medium text-purple-200 mb-2 block">OTP</label>
+              <input
+                type="text"
+                value={resetOtp}
+                onChange={(e) => setResetOtp(e.target.value.replace(/\D/g, ""))}
+                maxLength={6}
+                className={inputClass}
+                placeholder="Enter 6-digit OTP"
+                required
+              />
+            </div>
+            <div>
+              <label className="font-medium text-purple-200 mb-2 block">New Password</label>
+              <input
+                type="password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                className={inputClass}
+                placeholder="Enter new password"
+                required
+                minLength={6}
+              />
+            </div>
+            <div>
+              <label className="font-medium text-purple-200 mb-2 block">Confirm Password</label>
+              <input
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className={inputClass}
+                placeholder="Confirm new password"
+                required
+                minLength={6}
+              />
+            </div>
           </div>
-          <div className="w-full">
-            <p className="font-medium text-purple-200 mb-1">Confirm Password</p>
-            <input
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className={inputClass}
-              placeholder="Confirm new password"
-              required
-              minLength={6}
-            />
-          </div>
-          <button type="submit" className={buttonPrimary} disabled={loading}>
+          
+          <button type="submit" className={`${buttonPrimary} mt-8`} disabled={loading}>
             {loading ? "Resetting..." : "Reset Password"}
           </button>
+          
           <button
             type="button"
             onClick={() => setResetStep(1)}
-            className={linkBtn}
+            className={`${linkBtn} text-center mt-4 py-3 rounded-lg border border-purple-500/30 hover:bg-purple-500/10 transition-colors`}
           >
             Back to Email
           </button>
