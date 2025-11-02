@@ -4,6 +4,7 @@ import { assets } from "../assets/assets";
 import moment from "moment";
 import toast from "react-hot-toast";
 import chatbot from "../../public/chatbot.png";
+
 const SideBar = ({ isMenuOpen, setIsMenuOpen }) => {
   const {
     chats,
@@ -86,7 +87,6 @@ const SideBar = ({ isMenuOpen, setIsMenuOpen }) => {
       </button>
 
       {/* search chat */}
-
       <div className="flex items-center gap-2 p-3 mt-4 border border-gray-400 dark:border-white/20 rounded-md">
         <img src={assets.search_icon} alt="" className="w-4 not-dark:invert" />
         <input
@@ -98,6 +98,7 @@ const SideBar = ({ isMenuOpen, setIsMenuOpen }) => {
       placeholder:text-gray-400 outline-none"
         />
       </div>
+
       {/* recent chat */}
       {chats.length > 0 && <p className="mt-2 text-sm">Recent Chats</p>}
       <div className="flex-1 overflow-y-scroll mt-2 text-sm space-y-3">
@@ -118,9 +119,9 @@ const SideBar = ({ isMenuOpen, setIsMenuOpen }) => {
               }}
               key={chat._id}
               className="p-2 px-4 dark:bg-[#57317C]/10 border border-gray-300 
-              dark:border-[#80609F]/15 rounded-md cursor-pointer flex justify-between group "
+              dark:border-[#80609F]/15 rounded-md cursor-pointer flex justify-between items-center group hover:bg-gray-100 dark:hover:bg-[#57317C]/20"
             >
-              <div>
+              <div className="flex-1 min-w-0">
                 <p className="truncate w-full">
                   {chat.messages.length > 0
                     ? chat.messages[0].content.slice(0, 32)
@@ -132,9 +133,8 @@ const SideBar = ({ isMenuOpen, setIsMenuOpen }) => {
               </div>
               <img
                 src={assets.bin_icon}
-                alt=""
-                className="hidden group-hover:block w-4 cursor-pointer
-              not-dark:invert"
+                alt="Delete chat"
+                className="w-4 h-4 cursor-pointer not-dark:invert opacity-70 hover:opacity-100 transition-opacity"
                 onClick={(e) =>
                   toast.promise(deleteChat(e, chat._id), {
                     loading: "Deleting...",
@@ -213,7 +213,8 @@ const SideBar = ({ isMenuOpen, setIsMenuOpen }) => {
           <img
             onClick={logout}
             src={assets.logout_icon}
-            className="h-5 cursor-pointer block not-dark:invert md:group-hover:block"
+            alt="Logout"
+            className="h-5 cursor-pointer opacity-70 hover:opacity-100 transition-opacity not-dark:invert"
           />
         )}
       </div>
@@ -221,8 +222,8 @@ const SideBar = ({ isMenuOpen, setIsMenuOpen }) => {
       <img
         onClick={() => setIsMenuOpen(false)}
         src={assets.close_icon}
-        className="absolute top-3 right-3 w-5 h-5 cursor-pointer md:hidden
-        not-dark:invert"
+        alt="Close menu"
+        className="absolute top-3 right-3 w-5 h-5 cursor-pointer md:hidden not-dark:invert"
       />
     </div>
   );

@@ -89,7 +89,7 @@ const Register = () => {
       setLoading(false);
     }
   };
-   const formWrapper = "flex flex-col gap-4 w-full p-8 text-gray-100";
+   const formWrapper = "flex flex-col gap-2 w-full p-6 text-gray-100";
   const inputClass = "border border-purple-400/50 rounded-lg w-full p-3 bg-purple-900/30 text-white placeholder-gray-400 outline-purple-400 focus:ring-2 focus:ring-purple-400 transition-all text-sm text-center";
   const buttonPrimary = "bg-purple-600 hover:bg-purple-700 transition-all text-white w-full py-3 rounded-lg cursor-pointer font-medium disabled:opacity-50 disabled:cursor-not-allowed";
 
