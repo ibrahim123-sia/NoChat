@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import Chat from "../models/Chat.js";
 import nodemailer from "nodemailer";
 import User from "../models/User.js";
-
+import rateLimit from "express-rate-limit";
 // otp codes here
 
 const otpLimiter = rateLimit({
@@ -30,7 +30,6 @@ const transporter = nodemailer.createTransport({
 function generateOtp() {
   return Math.floor(100000 + Math.random() * 900000).toString();
 }
-// otp code end here
 
 // generate JWT
 const generateToken = (id) => {
@@ -110,7 +109,7 @@ export const registerUser = async (req, res) => {
 
 export const verifyOtp = async (req, res) => {
   const { email, otp } = req.body;
-  const cleanOtp = otp?.toString().replace(/\s/g, '');
+  const cleanOtp = otp?.toString().replace(/\s/g, "");
 
   if (!email || !cleanOtp) {
     return res.status(400).json({
@@ -124,9 +123,9 @@ export const verifyOtp = async (req, res) => {
     const user = await User.findOne({ email }).select("+otp +otpExpires");
 
     if (!user) {
-      return res.status(404).json({ 
-        success: false, 
-        message: "User not found" 
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
       });
     }
 
@@ -138,9 +137,9 @@ export const verifyOtp = async (req, res) => {
     }
 
     if (!user.otp || user.otp !== cleanOtp) {
-      return res.status(400).json({ 
-        success: false, 
-        message: "Invalid OTP code" 
+      return res.status(400).json({
+        success: false,
+        message: "Invalid OTP code",
       });
     }
 
@@ -163,12 +162,188 @@ export const verifyOtp = async (req, res) => {
       message: "Account verified successfully!",
     });
   } catch (error) {
-    res.status(500).json({ 
-      success: false, 
-      message: "Server error" 
+    res.status(500).json({
+      success: false,
+      message: "Server error",
     });
   }
 };
+
+export const resentOtp = async (req, res) => {
+  const { email } = req.body;
+
+  if (!email) {
+    return res.status(400).json({ message: "Email is required" });
+  }
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (user.isVerified) {
+      return res.status(400).json({
+        message: "Account already verified. Please login.",
+      });
+    }
+
+    const otp = generateOtp();
+    const otpExpires = new Date(Date.now() + 5 * 60 * 1000); // 5 min expiry
+
+    user.otp = otp;
+    user.otpExpires = otpExpires;
+    await user.save();
+
+    // Send OTP via email
+    try {
+      await transporter.sendMail({
+        from: `"NoChat" <${process.env.EMAIL_USER}>`,
+        to: email,
+        subject: "Your New OTP Verification Code",
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+            <h2 style="color: #333;">New OTP Requested</h2>
+            <p>Hello ${user.name},</p>
+            <p>Your new OTP verification code is:</p>
+            <div style="background: #f5f5f5; padding: 20px; text-align: center; margin: 20px 0; border-radius: 5px;">
+              <h1 style="margin: 0; color: #2c3e50; letter-spacing: 5px; font-size: 28px;">${otp}</h1>
+            </div>
+            <p>This code will expire in 5 minutes.</p>
+            <p style="font-size: 12px; color: #7f8c8d;">
+              If you didn't request this code, please ignore this email or contact support.
+            </p>
+          </div>
+        `,
+      });
+
+      res.status(200).json({
+        success: true,
+        message: "New OTP sent to your email. Please check your inbox.",
+      });
+    } catch (emailError) {
+      console.error("Email sending failed:", emailError);
+      return res.status(500).json({
+        message: "Failed to send OTP email. Please try again.",
+      });
+    }
+  } catch (err) {
+    console.error("Resend OTP error:", err);
+    res.status(500).json({
+      message: "Server error while resending OTP",
+    });
+  }
+};
+
+// otp end here
+
+// forget password
+
+export const forgetPassword = async (req, res) => {
+  const { email } = req.body;
+
+  if (!email) {
+    return res.status(400).json({
+      success: false,
+      message: "Email is required",
+    });
+  }
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      // Don't reveal if user exists or not for security
+      return res.json({
+        success: true,
+        message: "If an account exists, an OTP has been sent to your email",
+      });
+    }
+
+    const otp = generateOtp();
+    const otpExpires = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes
+
+    user.resetPasswordOtp = otp;
+    user.resetPasswordExpires = otpExpires;
+    await user.save();
+
+    // Send email
+    await transporter.sendMail({
+      from: `"NoChat" <${process.env.EMAIL_USER}>`,
+      to: email,
+      subject: "Password Reset OTP",
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <h2 style="color: #333;">Password Reset Request</h2>
+          <p>Hello ${user.name},</p>
+          <p>Your OTP for password reset is:</p>
+          <div style="background: #f5f5f5; padding: 20px; text-align: center; margin: 20px 0; border-radius: 5px;">
+            <h1 style="margin: 0; color: #2c3e50; letter-spacing: 5px; font-size: 28px;">${otp}</h1>
+          </div>
+          <p>This code will expire in 5 minutes.</p>
+          <p style="font-size: 12px; color: #7f8c8d;">
+            If you didn't request this, please ignore this email.
+          </p>
+        </div>
+      `,
+    });
+
+    res.json({
+      success: true,
+      message: "OTP has been sent to your email",
+    });
+  } catch (error) {
+    console.error("Forgot password error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
+
+export const resetPassword = async (req, res) => {
+  const { email, otp, newPassword } = req.body;
+
+  if (!email || !otp || !newPassword) {
+    return res.status(400).json({
+      success: false,
+      message: "All fields are required",
+    });
+  }
+
+  try {
+    const user = await User.findOne({ email }).select(
+      "+resetPasswordOtp +resetPasswordExpires"
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Verify OTP
+    if (user.resetPasswordOtp !== otp) {
+      return res.status(400).json({ message: "Invalid OTP" });
+    }
+
+    if (user.resetPasswordExpires < new Date()) {
+      return res.status(400).json({ message: "OTP expired" });
+    }
+
+    // Update password
+    user.password = newPassword;
+    user.resetPasswordOtp = undefined;
+    user.resetPasswordExpires = undefined;
+    await user.save();
+
+    res.json({
+      success: true,
+      message: "Password reset successfully",
+    });
+  } catch (error) {
+    console.error("Reset password error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 // API to login
 
 export const loginUser = async (req, res) => {

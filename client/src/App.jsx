@@ -9,7 +9,9 @@ import "./assets/prism.css";
 import Loading from "./pages/Loading";
 import { useAppContext } from "./context/AppContext";
 import Login from "./pages/Login";
+import Register from './pages/Register'
 import { Toaster } from "react-hot-toast";
+
 
 const App = () => {
   const { user, loadingUser } = useAppContext();
@@ -36,6 +38,7 @@ const App = () => {
             <SideBar isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
             <Routes>
               <Route path="/" element={<ChatBox />}></Route>
+              <Route path="/register" element={<Register />}></Route>
               <Route path="/credits" element={<Credits />}></Route>
               <Route path="/community" element={<Community />}></Route>
             </Routes>
