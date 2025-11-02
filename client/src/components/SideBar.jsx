@@ -64,7 +64,7 @@ const SideBar = ({ isMenuOpen, setIsMenuOpen }) => {
         <img
           src={chatbot}
           alt="NoChat AI Assistant Logo"
-          className="w-15 h-15 object-contain"
+          className="w-13 h-13 object-contain"
         />
         <div className="flex flex-col">
           <span className="font-semibold text-gray-900 dark:text-white">

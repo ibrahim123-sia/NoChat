@@ -3,7 +3,7 @@ import { useAppContext } from "../context/AppContext";
 import { assets } from "../assets/assets";
 import Message from "./Message";
 import toast from "react-hot-toast";
-import chatbot from "../../public/chatbot.png";
+import chatbot from "../assets/c1.png";
 
 const ChatBot = () => {
   const containRef = useRef(null);
