@@ -53,7 +53,7 @@ const Register = () => {
     setLoading(true);
 
     try {
-      const { data } = await axios.post("/api/user/verify-otp", {
+      const { data } = await axios.post("/api/user/verifyotp", {
         email,
         otp: otp.replace(/\s/g, ""),
       });
@@ -76,7 +76,7 @@ const Register = () => {
   const handleResendOtp = async () => {
     setLoading(true);
     try {
-      const { data } = await axios.post("/api/user/resend-otp", { email });
+      const { data } = await axios.post("/api/user/resendotp", { email });
 
       if (data.success) {
         toast.success("New OTP sent to your email!");
