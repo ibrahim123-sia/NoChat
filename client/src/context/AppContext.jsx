@@ -16,22 +16,37 @@ export const AppContextProvider = ({ children }) => {
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
   const [token, setToken] = useState(localStorage.getItem("token") || null);
   const [loadingUser, setLoadingUser] = useState(true);
+
+
   const fetchUser = async () => {
-    try {
-      const { data } = await axios.get("/api/user/data", {
-        headers: { Authorization: token },
-      });
-      if (data.success) {
-        setUser(data.user);
-      } else {
-        toast.error(data.message);
+  try {
+    const { data } = await axios.get("/api/user/data", {
+      headers: { Authorization: token },
+    });
+    if (data.success) {
+      setUser(data.user);
+    } else {
+      
+      if (data.message?.includes("Not authorized")) {
+        localStorage.removeItem("token");
+        setToken(null);
+        setUser(null);
       }
-    } catch (error) {
-      toast.error(error.message);
-    } finally {
-      setLoadingUser(false);
+      toast.error(data.message);
     }
-  };
+  } catch (error) {
+    
+    if (error.response?.status === 401) {
+      localStorage.removeItem("token");
+      setToken(null);
+      setUser(null);
+    } else {
+      toast.error(error.message);
+    }
+  } finally {
+    setLoadingUser(false);
+  }
+};
 
   const createNewChat = async () => {
     try {
