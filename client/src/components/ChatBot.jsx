@@ -73,8 +73,14 @@ const ChatBot = () => {
   }, [messages]);
 
   return (
-    <div className="flex-1 flex flex-col justify-between m-5 md:m-10 xl:mx-30 max-md:mt-14 2xl:pr-40">
-      <div ref={containRef} className="flex-1 mb-5 overflow-y-scroll">
+    <div className="flex-1 flex flex-col justify-between m-5 md:m-10 xl:mx-30 max-md:m-2 max-md:mt-12 h-[calc(100vh-80px)]">
+      <div
+        ref={containRef}
+        className="flex-1 mb-5 overflow-y-auto overscroll-contain scroll-smooth"
+        style={{
+          WebkitOverflowScrolling: "touch",
+        }}
+      >
         {messages.length === 0 && (
           <div className="h-full flex flex-col items-center justify-center gap-2 text-primary">
             <img src={chatbot} alt="" className="w-full max-w-40 sm:max-w-40" />
