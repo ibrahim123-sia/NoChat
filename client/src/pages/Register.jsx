@@ -11,6 +11,8 @@ const Register = () => {
   const [otp, setOtp] = useState("");
   const [step, setStep] = useState(0); 
   const [loading, setLoading] = useState(false);
+  const [verifying, setVerifying] = useState(false); // Separate state for verification
+  const [resending, setResending] = useState(false); // Separate state for resend
   const { axios, setToken } = useAppContext();
   const navigate = useNavigate();
 
@@ -50,7 +52,7 @@ const Register = () => {
 
   const handleVerifyOtp = async (e) => {
     e.preventDefault();
-    setLoading(true);
+    setVerifying(true); // Use verifying state instead of loading
 
     try {
       const { data } = await axios.post("/api/user/verifyotp", {
@@ -69,12 +71,12 @@ const Register = () => {
     } catch (error) {
       toast.error(error.response?.data?.message || error.message);
     } finally {
-      setLoading(false);
+      setVerifying(false); // Use verifying state instead of loading
     }
   };
 
   const handleResendOtp = async () => {
-    setLoading(true);
+    setResending(true); // Use resending state instead of loading
     try {
       const { data } = await axios.post("/api/user/resendotp", { email });
 
@@ -86,10 +88,11 @@ const Register = () => {
     } catch (error) {
       toast.error(error.response?.data?.message || error.message);
     } finally {
-      setLoading(false);
+      setResending(false); // Use resending state instead of loading
     }
   };
-   const formWrapper = "flex flex-col gap-2 w-full p-6 text-gray-100";
+
+  const formWrapper = "flex flex-col gap-2 w-full p-6 text-gray-100";
   const inputClass = "border border-purple-400/50 rounded-lg w-full p-3 bg-purple-900/30 text-white placeholder-gray-400 outline-purple-400 focus:ring-2 focus:ring-purple-400 transition-all text-sm text-center";
   const buttonPrimary = "bg-purple-600 hover:bg-purple-700 transition-all text-white w-full py-3 rounded-lg cursor-pointer font-medium disabled:opacity-50 disabled:cursor-not-allowed";
 
@@ -192,20 +195,20 @@ const Register = () => {
 
           <button
             type="submit"
-            disabled={loading || otp.length !== 6}
+            disabled={verifying || resending || otp.length !== 6} // Check both loading states
             className={`${buttonPrimary} mt-6`}
           >
-            {loading ? "Verifying..." : "Verify OTP"}
+            {verifying ? "Verifying..." : "Verify OTP"}
           </button>
 
           <div className="flex flex-col gap-3 mt-4 w-full">
             <button
               type="button"
               onClick={handleResendOtp}
-              disabled={loading}
+              disabled={verifying || resending} // Check both loading states
               className="bg-purple-700 hover:bg-purple-800 transition-all text-white w-full py-3 rounded-lg cursor-pointer font-medium disabled:opacity-50 disabled:cursor-not-allowed text-sm"
             >
-              {loading ? "Sending..." : "Resend OTP"}
+              {resending ? "Sending..." : "Resend OTP"}
             </button>
 
             <button
@@ -226,4 +229,4 @@ const Register = () => {
   );
 };
 
-export default Register; 
+export default Register;
