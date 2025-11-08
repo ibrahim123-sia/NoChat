@@ -84,21 +84,21 @@ const Login = () => {
     }
   };
 
-   const formWrapper = "flex flex-col gap-4 w-full p-8 text-gray-100";
-  const inputClass = "border border-purple-400/50 rounded-lg w-full p-3 bg-purple-900/30 text-white placeholder-gray-400 outline-purple-400 focus:ring-2 focus:ring-purple-400 transition-all text-sm text-center";
-  const buttonPrimary = "bg-purple-600 hover:bg-purple-700 transition-all text-white w-full py-3 rounded-lg cursor-pointer font-medium disabled:opacity-50 disabled:cursor-not-allowed";
+  const formWrapper = "flex flex-col gap-4 w-full p-8";
+  const inputClass = "border border-gray-300 rounded-lg w-full p-3 bg-white text-gray-900 placeholder-gray-500 outline-blue-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm";
+  const buttonPrimary = "bg-blue-600 hover:bg-blue-700 transition-all text-white w-full py-3 rounded-lg cursor-pointer font-medium disabled:opacity-50 disabled:cursor-not-allowed";
 
   return (
-    <div className="w-full bg-gradient-to-br from-purple-900/90 to-purple-800/80 rounded-2xl border border-purple-300/30 shadow-2xl backdrop-blur-sm">
+    <div className="w-full bg-white rounded-xl border border-gray-200 shadow-lg">
       {resetStep === 0 ? (
         <form onSubmit={handleSubmit} className={formWrapper}>
-          <p className="text-2xl font-bold text-center mb-6 text-purple-300">
+          <p className="text-2xl font-bold text-center mb-6 text-gray-800">
             Welcome Back
           </p>
 
           <div className="space-y-4 w-full">
             <div className="w-full">
-              <p className="font-medium text-purple-200 mb-2 text-sm text-center">Email</p>
+              <p className="font-medium text-gray-700 mb-2 text-sm">Email</p>
               <input
                 onChange={(e) => setEmail(e.target.value)}
                 value={email}
@@ -109,7 +109,7 @@ const Login = () => {
               />
             </div>
             <div className="w-full">
-              <p className="font-medium text-purple-200 mb-2 text-sm text-center">Password</p>
+              <p className="font-medium text-gray-700 mb-2 text-sm">Password</p>
               <input
                 onChange={(e) => setPassword(e.target.value)}
                 value={password}
@@ -126,9 +126,9 @@ const Login = () => {
           </button>
 
           <div className="text-center mt-4">
-            <Link to="/register" className="text-purple-200 text-sm">
+            <Link to="/register" className="text-gray-600 text-sm">
               Don't have an account?{" "}
-              <span className="text-purple-300 cursor-pointer font-medium hover:underline">
+              <span className="text-blue-600 cursor-pointer font-medium hover:underline">
                 Create account
               </span>
             </Link>
@@ -138,7 +138,7 @@ const Login = () => {
             <button
               type="button"
               onClick={() => setResetStep(1)}
-              className="text-purple-300 hover:text-purple-200 cursor-pointer text-sm font-medium transition-colors"
+              className="text-blue-600 hover:text-blue-700 cursor-pointer text-sm font-medium transition-colors"
             >
               Forgot Password?
             </button>
@@ -146,11 +146,11 @@ const Login = () => {
         </form>
       ) : resetStep === 1 ? (
         <form onSubmit={handleSendOtp} className={formWrapper}>
-          <h2 className="text-xl font-bold text-center mb-6 text-purple-300">
+          <h2 className="text-xl font-bold text-center mb-6 text-gray-800">
             Reset Password
           </h2>
           <div className="w-full">
-            <p className="font-medium text-purple-200 mb-2 text-sm text-center">Email</p>
+            <p className="font-medium text-gray-700 mb-2 text-sm">Email</p>
             <input
               type="email"
               value={resetEmail}
@@ -167,7 +167,7 @@ const Login = () => {
             <button
               type="button"
               onClick={() => setResetStep(0)}
-              className="text-purple-300 hover:text-purple-200 cursor-pointer text-sm font-medium transition-colors"
+              className="text-blue-600 hover:text-blue-700 cursor-pointer text-sm font-medium transition-colors"
             >
               Back to Login
             </button>
@@ -175,12 +175,12 @@ const Login = () => {
         </form>
       ) : (
         <form onSubmit={handlePasswordReset} className={formWrapper}>
-          <h2 className="text-xl font-bold text-center mb-6 text-purple-300">
+          <h2 className="text-xl font-bold text-center mb-6 text-gray-800">
             Reset Password
           </h2>
           <div className="space-y-4 w-full">
             <div className="w-full">
-              <p className="font-medium text-purple-200 mb-2 text-sm text-center">OTP</p>
+              <p className="font-medium text-gray-700 mb-2 text-sm">OTP</p>
               <input
                 type="text"
                 value={resetOtp}
@@ -192,7 +192,7 @@ const Login = () => {
               />
             </div>
             <div className="w-full">
-              <p className="font-medium text-purple-200 mb-2 text-sm text-center">New Password</p>
+              <p className="font-medium text-gray-700 mb-2 text-sm">New Password</p>
               <input
                 type="password"
                 value={newPassword}
@@ -204,7 +204,7 @@ const Login = () => {
               />
             </div>
             <div className="w-full">
-              <p className="font-medium text-purple-200 mb-2 text-sm text-center">Confirm Password</p>
+              <p className="font-medium text-gray-700 mb-2 text-sm">Confirm Password</p>
               <input
                 type="password"
                 value={confirmPassword}
@@ -223,7 +223,7 @@ const Login = () => {
             <button
               type="button"
               onClick={() => setResetStep(1)}
-              className="text-purple-300 hover:text-purple-200 cursor-pointer text-sm font-medium transition-colors"
+              className="text-blue-600 hover:text-blue-700 cursor-pointer text-sm font-medium transition-colors"
             >
               Back to Email
             </button>
@@ -234,4 +234,4 @@ const Login = () => {
   );
 };
 
-export default Login
+export default Login;
