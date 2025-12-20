@@ -3,7 +3,7 @@ import axios from "axios";
 import Chat from "../models/Chat.js";
 import User from "../models/User.js";
 import imageKit from "../configs/imageKit.js";
-import groq from "../configs/groq.js"; // Make sure to update your config import
+import groq from "../configs/groq.js";
 
 export const textMessageController = async (req, res) => {
   try {
@@ -20,6 +20,12 @@ export const textMessageController = async (req, res) => {
     const { chatId, prompt } = req.body;
 
     const chat = await Chat.findOne({ userId, _id: chatId });
+    if (!chat) {
+      return res.json({
+        success: false,
+        message: "Chat not found",
+      });
+    }
     
     // Get the entire conversation history for context
     const conversationHistory = chat.messages.map(msg => ({
@@ -27,12 +33,13 @@ export const textMessageController = async (req, res) => {
       content: msg.content
     }));
     
-    // Add the new user message
+    // Add the new user message to conversation history for API call
     conversationHistory.push({
       role: "user",
       content: prompt,
     });
 
+    // Save user message to database
     chat.messages.push({
       role: "user",
       content: prompt,
@@ -40,13 +47,18 @@ export const textMessageController = async (req, res) => {
       isImage: false,
     });
 
-    // Call GROQ API
+    // Call GROQ API with updated model names
     const completion = await groq.chat.completions.create({
-      model: "mixtral-8x7b-32768", // You can use other GROQ models like "llama2-70b-4096", "gemma2-9b-it", etc.
-      messages: conversationHistory, // Send full conversation history for context
+      model: "llama-3.1-8b-instant", // Updated model name
+      messages: conversationHistory,
       temperature: 0.7,
       max_tokens: 1024,
+      stream: false,
     });
+
+    if (!completion.choices || !completion.choices[0]) {
+      throw new Error("No response from AI model");
+    }
 
     const reply = {
       role: "assistant",
@@ -55,17 +67,31 @@ export const textMessageController = async (req, res) => {
       isImage: false,
     };
     
+    // Send response immediately
     res.json({ success: true, reply });
     
+    // Save assistant reply to database
     chat.messages.push(reply);
     await chat.save();
 
+    // Deduct credit
     await User.updateOne({ _id: userId }, { $inc: { credits: -1 } });
   } catch (error) {
-    console.error("GROQ API Error:", error);
+    console.error("GROQ API Error:", error.message);
+    
+    // More specific error messages
+    let errorMessage = error.message;
+    if (error.message.includes("model")) {
+      errorMessage = "AI model configuration error. Please try a different model.";
+    } else if (error.message.includes("API key") || error.message.includes("authentication")) {
+      errorMessage = "AI service authentication failed";
+    } else if (error.message.includes("rate limit") || error.message.includes("quota")) {
+      errorMessage = "AI service is currently busy. Please try again later.";
+    }
+    
     res.json({ 
       success: false, 
-      message: error.message || "An error occurred while processing your request" 
+      message: errorMessage 
     });
   }
 };
@@ -87,6 +113,12 @@ export const imageMessageController = async function (req, res) {
 
     // find chats
     const chat = await Chat.findOne({ userId, _id: chatId });
+    if (!chat) {
+      return res.json({
+        success: false,
+        message: "Chat not found",
+      });
+    }
     
     // push user message
     chat.messages.push({
@@ -107,6 +139,7 @@ export const imageMessageController = async function (req, res) {
     // trigger generation by fetching from imagekit
     const aiImageResponse = await axios.get(generatedImageUrl, {
       responseType: "arraybuffer",
+      timeout: 30000, // 30 second timeout
     });
 
     // convert to base64
@@ -136,10 +169,18 @@ export const imageMessageController = async function (req, res) {
     await chat.save();
     await User.updateOne({ _id: userId }, { $inc: { credits: -2 } });
   } catch (error) {
-    console.error("Image Generation Error:", error);
+    console.error("Image Generation Error:", error.message);
+    
+    let errorMessage = error.message;
+    if (error.message.includes("timeout")) {
+      errorMessage = "Image generation timed out. Please try again.";
+    } else if (error.message.includes("ENDPOINT")) {
+      errorMessage = "Image service configuration error";
+    }
+    
     res.json({ 
       success: false, 
-      message: error.message || "An error occurred while generating the image" 
+      message: errorMessage || "An error occurred while generating the image" 
     });
   }
 };
