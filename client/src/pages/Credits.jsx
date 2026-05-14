@@ -51,17 +51,17 @@ const Credits = () => {
   if (loading) return <Loading />;
 
   return (
-    <div className="max-w-7xl h-screen overflow-y-scroll mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <h2 className="text-3xl font-semibold text-center mb-10 xl:mt-30 text-gray-800 dark:text-white">
+    <div className="max-w-7xl w-full h-screen overflow-y-auto mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 pt-16 md:pt-12">
+      <h2 className="text-2xl sm:text-3xl font-semibold text-center mb-8 sm:mb-10 xl:mt-20 text-gray-800 dark:text-white">
         Credit Plans
       </h2>
 
-      <div className="flex flex-wrap justify-center gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 justify-center">
         {plans.map((plan) => (
           <div
             key={plan._id}
             className={`border border-gray-200 dark:border-purple-700
-      rounded-lg shadow hover:shadow large transition-shadow p-6 min-w-[300px] flex flex-col
+      rounded-lg shadow hover:shadow-lg transition-shadow p-6 w-full flex flex-col
       ${
         plan._id === "pro"
           ? "bg-purple-50 dark:bg-purple-900"

@@ -3,7 +3,7 @@ import { useAppContext } from "../context/AppContext";
 import { assets } from "../assets/assets";
 import moment from "moment";
 import toast from "react-hot-toast";
-import chatbot from "../../public/chatbot.png";
+const chatbot = "/chatbot.png";
 
 const SideBar = ({ isMenuOpen, setIsMenuOpen }) => {
   const {
@@ -55,9 +55,17 @@ const SideBar = ({ isMenuOpen, setIsMenuOpen }) => {
   };
 
   return (
+    <>
+      {/* Mobile backdrop */}
+      {isMenuOpen && (
+        <div
+          onClick={() => setIsMenuOpen(false)}
+          className="md:hidden fixed inset-0 bg-black/50 z-10"
+        />
+      )}
     <div
-      className={`flex flex-col h-screen min-w-72 p-3 dark:bg-gradient-to-b from-[#242124]/30 to-[#000000]/30
-  border-r border-[#80609f]/30 backdrop-blur-3xl transition-all duration-500 max-md:fixed left-0 z-10
+      className={`flex flex-col h-screen w-72 min-w-72 max-w-[85vw] p-3 dark:bg-gradient-to-b from-[#242124] to-[#000000] bg-white
+  border-r border-gray-200 dark:border-[#80609f]/30 backdrop-blur-3xl transition-transform duration-300 max-md:fixed left-0 top-0 z-20
   ${!isMenuOpen ? "max-md:-translate-x-full" : "max-md:translate-x-0"}`}
     >
       {/* Logo */}
@@ -226,6 +234,7 @@ const SideBar = ({ isMenuOpen, setIsMenuOpen }) => {
         className="absolute top-3 right-3 w-5 h-5 cursor-pointer md:hidden not-dark:invert"
       />
     </div>
+    </>
   );
 };
 

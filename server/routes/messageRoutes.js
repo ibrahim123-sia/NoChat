@@ -1,11 +1,11 @@
-import expres from "express";
+import express from "express";
 import { protect } from "../middlewares/auth.js";
 import {
   imageMessageController,
   textMessageController,
 } from "../controllers/messageController.js";
 
-const messageRouter = expres.Router();
+const messageRouter = express.Router();
 
 messageRouter.post("/text", protect, textMessageController);
 messageRouter.post("/image", protect, imageMessageController);

@@ -22,18 +22,19 @@ const App = () => {
   return (
     <>
       <Toaster />
-      {!isMenuOpen && (
+      {user && !isMenuOpen && (
         <img
           src={assets.menu_icon}
-          className="absolute top-3 left-3 w-8 h-8 cursor-pointer
-          md:hidden not-dark:invert"
+          alt="Open menu"
+          className="fixed top-3 left-3 w-8 h-8 cursor-pointer
+          md:hidden not-dark:invert z-30 p-1 rounded bg-white/70 dark:bg-black/50 backdrop-blur"
           onClick={() => setIsMenuOpen(true)}
         />
       )}
 
       {user ? (
         <div className="dark:bg-gradient-to-b from-[#242124] to-[#000000] dark:text-white">
-          <div className="flex h-screen w-screen">
+          <div className="flex h-screen w-screen overflow-hidden">
             <SideBar isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
             <Routes>
               <Route path="/" element={<ChatBox />}></Route>

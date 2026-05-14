@@ -64,7 +64,7 @@ export const AppContextProvider = ({ children }) => {
     }
   };
 
-  const fetchUsersChats = async () => {
+  const fetchUsersChats = async (depth = 0) => {
     try {
       const { data } = await axios.get("/api/chat/get", {
         headers: { Authorization: token },
@@ -72,10 +72,13 @@ export const AppContextProvider = ({ children }) => {
 
       if (data.success) {
         setChats(data.chats);
-        // if user have no chat
         if (data.chats.length === 0) {
-          await createNewChat();
-          return fetchUsersChats();
+          // Guard against infinite recursion if /chat/create silently fails
+          if (depth > 1) return;
+          await axios.get("/api/chat/create", {
+            headers: { Authorization: token },
+          });
+          return fetchUsersChats(depth + 1);
         } else {
           setSelectedChat(data.chats[0]);
         }

@@ -32,12 +32,13 @@ const Community = () => {
       <h2 className="text-xl font-semibold mb-6 text-gray-800 dark:text-purple-100">
         Community Images
       </h2>
-      {images ? (
-        <div className="flex flex-wrap max-sm:justify-center gap-5">
+      {images && images.length > 0 ? (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-5">
           {images.map((item, index) => (
             <a
               key={index}
               target="_blank"
+              rel="noreferrer"
               href={item.imageUrl}
               className="relative group block rounded-lg overflow-hidden border border-gray-200
           dark:border-purple-700 shadow-sm hover:shadow-md transition-shadow duration-300"
@@ -45,11 +46,12 @@ const Community = () => {
               <img
                 src={item.imageUrl}
                 alt=""
-                className="w-full h-40 md:h-50 2xl:h-62 object-cover
+                loading="lazy"
+                className="w-full h-32 sm:h-40 md:h-50 2xl:h-62 object-cover
             group-hover:scale-105 transition-transform duration-300 ease-in-out"
               />
               <p
-                className="abolute bottom-0 right-0 text-xs bg-black/50 backdrop-blur text-white
+                className="absolute bottom-0 right-0 text-xs bg-black/50 backdrop-blur text-white
                px-4 py-1 rounded-tl-xl opacity-0 group-hover:opacity-100 transition duration-300"
               >
                 Created by {item.userName}

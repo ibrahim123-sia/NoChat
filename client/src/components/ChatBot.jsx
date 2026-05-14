@@ -7,7 +7,7 @@ import chatbot from "../assets/c1.png";
 
 const ChatBot = () => {
   const containRef = useRef(null);
-  const { selectedChat, theme, user, axios, token, setUser } = useAppContext();
+  const { selectedChat, user, axios, token, setUser } = useAppContext();
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [prompt, setPrompt] = useState("");
@@ -16,30 +16,33 @@ const ChatBot = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    try {
-      if (!user) return toast.error("Login to send message");
+    if (loading) return;
+    const trimmed = prompt.trim();
+    if (!trimmed) return;
+    if (!user) return toast.error("Login to send message");
 
-      setLoading(true);
-      const promptCopy = prompt;
-      setPrompt("");
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: "user",
-          content: prompt,
-          timestamp: Date.now(),
-          isImage: false,
-        },
-      ]);
+    const promptCopy = trimmed;
+    setLoading(true);
+    setPrompt("");
+    setMessages((prev) => [
+      ...prev,
+      {
+        role: "user",
+        content: trimmed,
+        timestamp: Date.now(),
+        isImage: false,
+      },
+    ]);
+
+    try {
       const { data } = await axios.post(
         `/api/message/${mode}`,
-        { chatId: selectedChat._id, prompt, isPublished },
+        { chatId: selectedChat._id, prompt: trimmed, isPublished },
         { headers: { Authorization: token } }
       );
 
       if (data.success) {
         setMessages((prev) => [...prev, data.reply]);
-        // decrease credit
         if (mode === "image") {
           setUser((prev) => ({ ...prev, credits: prev.credits - 2 }));
         } else {
@@ -48,11 +51,13 @@ const ChatBot = () => {
       } else {
         toast.error(data.message);
         setPrompt(promptCopy);
+        setMessages((prev) => prev.slice(0, -1));
       }
     } catch (error) {
       toast.error(error.message);
+      setPrompt(promptCopy);
+      setMessages((prev) => prev.slice(0, -1));
     } finally {
-      setPrompt("");
       setLoading(false);
     }
   };
@@ -70,21 +75,19 @@ const ChatBot = () => {
         behavior: "smooth",
       });
     }
-  }, [messages]);
+  }, [messages, loading]);
 
   return (
-    <div className="flex-1 flex flex-col justify-between m-5 md:m-10 xl:mx-30 max-md:m-2 max-md:mt-12 h-[calc(100vh-80px)]">
+    <div className="flex-1 flex flex-col justify-between px-3 sm:px-5 md:px-10 xl:px-30 py-3 sm:py-5 pt-14 md:pt-5 h-screen min-w-0 w-full">
       <div
         ref={containRef}
-        className="flex-1 mb-5 overflow-y-auto overscroll-contain scroll-smooth"
-        style={{
-          WebkitOverflowScrolling: "touch",
-        }}
+        className="flex-1 mb-3 sm:mb-5 overflow-y-auto overscroll-contain scroll-smooth pr-1"
+        style={{ WebkitOverflowScrolling: "touch" }}
       >
         {messages.length === 0 && (
           <div className="h-full flex flex-col items-center justify-center gap-2 text-primary">
-            <img src={chatbot} alt="" className="w-full max-w-40 sm:max-w-40" />
-            <p className="mt-5 text-4xl sm:text-6xl text-center text-gray-400 dark:text-white">
+            <img src={chatbot} alt="" className="w-28 sm:w-40 max-w-40" />
+            <p className="mt-3 sm:mt-5 text-2xl sm:text-4xl md:text-6xl text-center text-gray-400 dark:text-white">
               Ask me Anything
             </p>
           </div>
@@ -94,9 +97,8 @@ const ChatBot = () => {
           <Message key={index} message={message} />
         ))}
 
-        {/* Loading Animation */}
         {loading && (
-          <div className="loader flex items-center gap-1.5">
+          <div className="loader flex items-center gap-1.5 my-2">
             <div className="w-1.5 h-1.5 rounded-full bg-gray-500 dark:bg-white animate-bounce"></div>
             <div className="w-1.5 h-1.5 rounded-full bg-gray-500 dark:bg-white animate-bounce"></div>
             <div className="w-1.5 h-1.5 rounded-full bg-gray-500 dark:bg-white animate-bounce"></div>
@@ -105,8 +107,8 @@ const ChatBot = () => {
       </div>
 
       {mode === "image" && (
-        <label className="inline-flex items-center gap-2 mb-3 text-sm mx-auto">
-          <p className="text-xs">Published Generated Image to Community</p>
+        <label className="inline-flex items-center gap-2 mb-2 sm:mb-3 text-xs sm:text-sm mx-auto">
+          <p>Publish Generated Image to Community</p>
           <input
             type="checkbox"
             className="cursor-pointer"
@@ -116,16 +118,15 @@ const ChatBot = () => {
         </label>
       )}
 
-      {/*prompt input  */}
       <form
         onSubmit={onSubmit}
-        className="bg-primary/20 dark:bg-[#583C79]/30 border-primary dark:border-[#80609F]/30
-      rounded-full w-full max-w-2xl p-3 pl-4 mx-auto flex gap-4 items-center"
+        className="bg-primary/20 dark:bg-[#583C79]/30 border border-primary dark:border-[#80609F]/30
+      rounded-full w-full max-w-2xl p-2 sm:p-3 pl-3 sm:pl-4 mx-auto flex gap-2 sm:gap-4 items-center"
       >
         <select
           onChange={(e) => setMode(e.target.value)}
           value={mode}
-          className="text-sm pl-3 pr-2 outline-none"
+          className="text-xs sm:text-sm pl-1 sm:pl-3 pr-1 sm:pr-2 outline-none bg-transparent shrink-0"
         >
           <option value="text" className="dark:bg-purple-900">
             Text
@@ -138,14 +139,14 @@ const ChatBot = () => {
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
           type="text"
-          placeholder="Type your prompt here..."
+          placeholder="Type your prompt..."
           required
-          className="flex-1 w-full text-sm outline-none"
+          className="flex-1 w-full text-sm outline-none bg-transparent min-w-0"
         />
-        <button disabled={loading}>
+        <button disabled={loading} type="submit" className="shrink-0">
           <img
             src={loading ? assets.stop_icon : assets.send_icon}
-            className="w-8 cursor-pointer"
+            className="w-7 sm:w-8 cursor-pointer"
             alt=""
           />
         </button>

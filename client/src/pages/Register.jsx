@@ -64,7 +64,7 @@ const Register = () => {
         setToken(data.token);
         localStorage.setItem("token", data.token);
         toast.success("Account verified successfully!");
-        navigate('/chatbot')
+        navigate('/');
       } else {
         toast.error(data.message);
       }
